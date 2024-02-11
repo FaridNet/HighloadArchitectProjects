@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: src/WebApi/Dockerfile
     ports:
-     - "5000:5000"
+     - "5000:8080"
     depends_on:
      - "postgres_db"
     networks:
