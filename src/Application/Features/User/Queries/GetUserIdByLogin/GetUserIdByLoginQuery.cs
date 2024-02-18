@@ -28,7 +28,7 @@ internal class GetUserByLoginQueryHandler(IApplicationDbContext applicationDbCon
 
         return new UserDto
         {
-            Id = user.Id
+            Id = user.Id            
         };
     }
 }

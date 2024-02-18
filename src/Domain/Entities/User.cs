@@ -23,7 +23,7 @@ public class User
     /// <summary>
     /// Фамилия
     /// </summary>
-    public required string SecondName { get; set; }
+    public required string LastName { get; set; }
 
     /// <summary>
     /// День рождения
