@@ -1,28 +1,6 @@
 version: '3.4'
 
 services:
-  webapi:
-    image: ${DOCKER_REGISTRY-}webapi
-    build:
-      context: .
-      dockerfile: src/WebApi/Dockerfile
-    ports:
-     - "5000:8080"
-    depends_on:
-     - "postgres_db"     
-    networks:
-      - aspnetcoreapp-network
-
-  postgres_db:
-    container_name: 'postgres'
-    image: postgres:latest
-    environment:      
-      POSTGRES_PASSWORD: Qwerty1!
-    ports:
-      - "54320:5432"
-    networks:
-      - aspnetcoreapp-network
-
   apm-server:
     image: elastic/apm-server:8.13.1
     depends_on:
@@ -35,7 +13,7 @@ services:
     ports:
     - 8200:8200
     networks:
-    - aspnetcoreapp-network
+    - elastic
     command: >
        apm-server -e
          -E apm-server.rum.enabled=true
@@ -69,7 +47,7 @@ services:
     ports:
       - 9200:9200
     networks:
-    - aspnetcoreapp-network
+    - elastic
     healthcheck:
       interval: 20s
       retries: 10
@@ -83,7 +61,7 @@ services:
     ports:
       - 5601:5601
     networks:
-    - aspnetcoreapp-network 
+    - elastic
     depends_on:
       - elasticsearch
     healthcheck:
@@ -92,7 +70,7 @@ services:
       test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:5601/api/status 
 
 networks:
-  aspnetcoreapp-network:
+  elastic:
     driver: bridge
 
 volumes:

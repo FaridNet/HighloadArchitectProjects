@@ -12,7 +12,7 @@
 
 	<ItemGroup>
 	  <Content Include="Data\Initialiser\people.v2.csv">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </Content>
 	</ItemGroup>
 

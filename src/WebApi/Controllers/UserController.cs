@@ -9,7 +9,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("user")]
-[Authorize]
+//[Authorize]
 public class UserController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
@@ -42,7 +42,7 @@ public class UserController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("search")]
-    public async Task<IActionResult> Search(SearchUserQuery request)
+    public async Task<IActionResult> Search([FromQuery] SearchUserQuery request)
     {
         var result = await _mediator.Send(request);
 

@@ -56,7 +56,7 @@ public class ApplicationDbContextInitialiser(ILogger<ApplicationDbContextInitial
             await _context.SaveChangesAsync();
 
             var currentDir = Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location);
-            var filePath = Path.Combine(currentDir, "Data\\Initialiser\\people.v2.csv");
+            var filePath = Path.Combine(currentDir, "./Data/Initialiser/people.v2.csv");
 
             using StreamReader sr = File.OpenText(filePath);
             string? strRow = string.Empty;
