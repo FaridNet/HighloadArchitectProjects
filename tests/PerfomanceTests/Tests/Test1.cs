@@ -20,9 +20,9 @@ public static class Test1
         })
         .WithoutWarmUp()
         .WithLoadSimulations(
-            Simulation.Inject(rate: 50,
+            Simulation.Inject(rate: 20,
                               interval: TimeSpan.FromSeconds(1),
-                              during: TimeSpan.FromSeconds(30))
+                              during: TimeSpan.FromSeconds(60))
         );
 
         NBomberRunner
