@@ -26,12 +26,12 @@ internal class SearchUserQueryHandler(IApplicationDbContext applicationDbContext
 
         if (!string.IsNullOrEmpty(request.SearchByFirstName))
         {
-            query = query.Where(x => x.FirstName.Contains(request.SearchByFirstName));
+            query = query.Where(x => x.FirstName.StartsWith(request.SearchByFirstName));
         }
 
         if (!string.IsNullOrEmpty(request.SearchByLastName))
         {
-            query = query.Where(x => x.LastName.Contains(request.SearchByLastName));
+            query = query.Where(x => x.LastName.StartsWith(request.SearchByLastName));
         }
 
         var result = await query

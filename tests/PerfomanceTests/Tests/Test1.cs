@@ -12,7 +12,7 @@ public static class Test1
         var scenario = Scenario.Create("perfomance_scenario", async context =>
         {
             var response = await httpClient            
-                .GetAsync("http://localhost:5156/user/search?SearchByFirstName=Александр&SearchByLastName=Барсуков");
+                .GetAsync("http://localhost:8080/user/search?SearchByFirstName=Александр&SearchByLastName=Барсуков");
 
             return response.IsSuccessStatusCode
                 ? Response.Ok()
