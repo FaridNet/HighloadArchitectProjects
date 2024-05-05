@@ -7,6 +7,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Data\people.v2.csv" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="Data\Initialiser\people.v2.csv">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="EFCore.BulkExtensions.PostgreSql" Version="8.0.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -24,6 +35,10 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Application\Application.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Migrations\" />
 	</ItemGroup>
 
 </Project>

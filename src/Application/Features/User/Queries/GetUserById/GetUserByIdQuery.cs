@@ -21,7 +21,7 @@ internal class GetUserByIdQueryHandler(IApplicationDbContext applicationDbContex
         {
             Id = userEntity.Id,
             FirstName = userEntity.FirstName,
-            SecondName = userEntity.SecondName,
+            SecondName = userEntity.LastName,
             Birthdate = userEntity.BirthDate,
             Biography = userEntity.Biography,
             City = userEntity.City

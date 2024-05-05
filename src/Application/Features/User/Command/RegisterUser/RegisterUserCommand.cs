@@ -51,7 +51,7 @@ internal class RegisterUserCommandHandler(IApplicationDbContext applicationDbCon
         {
             Login = request.Login,
             FirstName = request.FirstName,
-            SecondName = request.SecondName,
+            LastName = request.SecondName,
             BirthDate = request.BirthDate.ToUniversalTime(),
             Biography = request.Biography,
             City = request.City,

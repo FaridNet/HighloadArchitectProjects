@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Infrastructure.Data;
+using Infrastructure.Data.Initialiser;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +14,8 @@ public static class DependencyInjection
         var connectionString = configuration.GetConnectionString("DefaultConnection");
         services.AddDbContext<ApplicationDbContext>((sp, options) =>
         {
-            options.UseNpgsql(connectionString);
+            options.UseNpgsql(connectionString);            
+            options.EnableSensitiveDataLogging();
         });
 
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());

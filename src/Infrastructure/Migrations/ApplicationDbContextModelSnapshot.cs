@@ -44,15 +44,15 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Login")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("SecondName")
                         .IsRequired()
                         .HasColumnType("text");
 
