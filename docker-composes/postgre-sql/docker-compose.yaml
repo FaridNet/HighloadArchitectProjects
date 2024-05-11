@@ -1,0 +1,46 @@
+version: '3.8'
+
+services: 
+  pgmaster:    
+    image: postgres
+    command: ["postgres", "-c", "log_statement=all"]
+    ports:
+     - "54321:5432"
+    environment:      
+      POSTGRES_PASSWORD: pass
+    networks:
+      - postgres-net
+    volumes:
+      - "C:/docker-volumes/pgmaster:/var/lib/postgresql/data"
+
+  pgslave:    
+    image: postgres
+    command: ["postgres", "-c", "log_statement=all"]
+    ports:
+     - "54322:5432"
+    environment:      
+      POSTGRES_PASSWORD: pass
+    networks:
+      - postgres-net
+    volumes:
+      - "C:/docker-volumes/pgslave:/var/lib/postgresql/data"
+
+  pgasyncslave:
+    image: postgres
+    command: ["postgres", "-c", "log_statement=all"]
+    ports:
+     - "54323:5432"
+    environment:      
+      POSTGRES_PASSWORD: pass
+    networks:
+      - postgres-net
+    volumes:
+      - "C:/docker-volumes/pgasyncslave:/var/lib/postgresql/data"
+
+volumes:
+  postgresql-data:
+    driver: local
+
+networks:
+  postgres-net:
+    driver: bridge  

@@ -13,7 +13,22 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "src\Domain\Domain
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{3DADD744-7840-4B70-9215-FDD1903B048A}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{92BF03A5-400F-4712-8F2F-F1DE3350A289}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-composes", "docker-composes", "{164EFB95-ED03-48D5-B1B3-C4F059AFD2D1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web-app", "web-app", "{748E0BC9-3500-4A43-B9A6-77ECCCA78E20}"
+	ProjectSection(SolutionItems) = preProject
+		docker-composes\web-app\docker-compose.yml = docker-composes\web-app\docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "postgre-sql", "postgre-sql", "{936AC9E2-0FE6-4E9C-9D05-D4E3187078DD}"
+	ProjectSection(SolutionItems) = preProject
+		docker-composes\postgre-sql\docker-compose.yaml = docker-composes\postgre-sql\docker-compose.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "elastic", "elastic", "{40F0FA77-E047-4FF3-A9D6-188E3D759216}"
+	ProjectSection(SolutionItems) = preProject
+		docker-composes\elastic\docker-compose.yml = docker-composes\elastic\docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +52,6 @@ Global
 		{3DADD744-7840-4B70-9215-FDD1903B048A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DADD744-7840-4B70-9215-FDD1903B048A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DADD744-7840-4B70-9215-FDD1903B048A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{92BF03A5-400F-4712-8F2F-F1DE3350A289}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{92BF03A5-400F-4712-8F2F-F1DE3350A289}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{92BF03A5-400F-4712-8F2F-F1DE3350A289}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{92BF03A5-400F-4712-8F2F-F1DE3350A289}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +61,9 @@ Global
 		{6EF31E65-2796-4A7E-AD96-B4E36D7B0A2B} = {6BDE5F4F-CF7A-4923-8B7A-39EBC2C9D83E}
 		{926A5819-EB94-4067-9429-BE6231B1C3AD} = {6BDE5F4F-CF7A-4923-8B7A-39EBC2C9D83E}
 		{3DADD744-7840-4B70-9215-FDD1903B048A} = {6BDE5F4F-CF7A-4923-8B7A-39EBC2C9D83E}
+		{748E0BC9-3500-4A43-B9A6-77ECCCA78E20} = {164EFB95-ED03-48D5-B1B3-C4F059AFD2D1}
+		{936AC9E2-0FE6-4E9C-9D05-D4E3187078DD} = {164EFB95-ED03-48D5-B1B3-C4F059AFD2D1}
+		{40F0FA77-E047-4FF3-A9D6-188E3D759216} = {164EFB95-ED03-48D5-B1B3-C4F059AFD2D1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8C1BB7EE-01D2-4455-9E5B-76A448142D5D}
