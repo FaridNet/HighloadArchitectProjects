@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  webapi:
+    image: ${DOCKER_REGISTRY-}webapi
+    build:
+      context: .
+      dockerfile: src/WebApi/Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - pgmaster
+      # - "pgslave"
+      # - "pgasyncslave"      
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  pgmaster:
+    image: postgres:16.3
+    command: ["postgres", "-c", "log_statement=all"]
+    ports:
+      - 54321:5432
+    environment:
+      POSTGRES_PASSWORD: Qwerty1!
+      POSTGRES_DB: demo_otus
+    # networks:
+    #   - aspnetcoreapp-network
+    volumes:
+      - "C:/docker-volumes/pgmaster:/var/lib/postgresql/data"
+
+  # pgslave:
+  #   image: postgres
+  #   command: ["postgres", "-c", "log_statement=all"]
+  #   ports:
+  #    - "54322:5432"
+  #   environment:      
+  #     POSTGRES_PASSWORD: Qwerty2!
+  #   networks:
+  #     - aspnetcoreapp-network
+  #   volumes:
+  #     - "C:/docker-volumes/pgslave:/var/lib/postgresql/data"
+
+  # pgasyncslave:
+  #   image: postgres
+  #   command: ["postgres", "-c", "log_statement=all"]
+  #   ports:
+  #    - "54323:5432"
+  #   environment:      
+  #     POSTGRES_PASSWORD: Qwerty3!
+  #   networks:
+  #     - aspnetcoreapp-network
+  #   volumes:
+  #     - "C:/docker-volumes/pgasyncslave:/var/lib/postgresql/data"
+
+  grafana:
+    image: grafana/grafana
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - aspnetcoreapp-network
+
+  prometheus:
+    image: prom/prometheus
+    restart: always
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    networks:
+      - aspnetcoreapp-network
+
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter
+    ports:
+      - 9187:9187
+    environment:
+      DATA_SOURCE_NAME: "postgresql://postgres:Qwerty1!@pgmaster:5432/demo_otus?sslmode=disable"
+    links:
+      - postgres
+      - prometheus
+
+networks:
+  aspnetcoreapp-network

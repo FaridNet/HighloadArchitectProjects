@@ -1,0 +1,163 @@
+version: '3.8'
+
+services:
+  webapi:
+    # container_name: webapi-container
+    image: ${DOCKER_REGISTRY-}webapi
+    build:
+      context: .
+      dockerfile: src/WebApi/Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - pgmaster
+      # - "pgslave"
+      # - "pgasyncslave"
+      # - apm-server
+    # networks:
+    #   - aspnetcoreapp-network
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  pgmaster:
+    image: postgres:16.3
+    command: ["postgres", "-c", "log_statement=all"]
+    ports:
+      - 54321:5432
+    environment:
+      POSTGRES_PASSWORD: Qwerty1!
+      POSTGRES_DB: demo_otus
+    # networks:
+    #   - aspnetcoreapp-network
+    volumes:
+      - "C:/docker-volumes/pgmaster:/var/lib/postgresql/data"
+
+  # pgslave:
+  #   image: postgres
+  #   command: ["postgres", "-c", "log_statement=all"]
+  #   ports:
+  #    - "54322:5432"
+  #   environment:      
+  #     POSTGRES_PASSWORD: Qwerty2!
+  #   networks:
+  #     - aspnetcoreapp-network
+  #   volumes:
+  #     - "C:/docker-volumes/pgslave:/var/lib/postgresql/data"
+
+  # pgasyncslave:
+  #   image: postgres
+  #   command: ["postgres", "-c", "log_statement=all"]
+  #   ports:
+  #    - "54323:5432"
+  #   environment:      
+  #     POSTGRES_PASSWORD: Qwerty3!
+  #   networks:
+  #     - aspnetcoreapp-network
+  #   volumes:
+  #     - "C:/docker-volumes/pgasyncslave:/var/lib/postgresql/data"
+  
+  # apm-server:
+  #   image: elastic/apm-server:7.17.20
+  #   depends_on:
+  #     elasticsearch:
+  #       condition: service_healthy
+  #     kibana:
+  #       condition: service_healthy
+  #   cap_add: ["CHOWN", "DAC_OVERRIDE", "SETGID", "SETUID"]
+  #   cap_drop: ["ALL"]
+  #   ports:
+  #     - 8200:8200
+  #   networks:
+  #     - aspnetcoreapp-network
+  #   command: >
+  #      apm-server -e
+  #        -E apm-server.rum.enabled=true
+  #        -E setup.kibana.host=kibana:5601
+  #        -E setup.template.settings.index.number_of_replicas=0
+  #        -E apm-server.kibana.enabled=true
+  #        -E apm-server.kibana.host=kibana:5601
+  #        -E output.elasticsearch.hosts=["elasticsearch:9200"]
+  #        -E output.elasticsearch.ssl.verification_mode=none
+  #   healthcheck:
+  #     interval: 10s
+  #     retries: 12
+  #     test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:8200/
+
+  # elasticsearch:
+  #   image: elasticsearch:7.17.20
+  #   environment:
+  #   - bootstrap.memory_lock=true
+  #   - cluster.name=docker-cluster
+  #   - cluster.routing.allocation.disk.threshold_enabled=false
+  #   - discovery.type=single-node
+  #   - ES_JAVA_OPTS=-XX:UseAVX=2 -Xms1g -Xmx1g
+  #   ulimits:
+  #     memlock:
+  #       hard: -1
+  #       soft: -1
+  #   volumes:
+  #     - "C:/docker-volumes/elasticsearch:/usr/share/elasticsearch/data"
+  #   ports:
+  #     - 9200:9200
+  #   networks:
+  #     - aspnetcoreapp-network
+  #   healthcheck:
+  #     interval: 20s
+  #     retries: 10
+  #     test: curl -s http://localhost:9200/_cluster/health | grep -vq '"status":"red"'
+
+  # kibana:
+  #   image: kibana:7.17.20
+  #   depends_on:
+  #     elasticsearch:
+  #       condition: service_healthy
+  #   environment:
+  #     ELASTICSEARCH_URL: http://elasticsearch:9200
+  #     ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+  #   ports:
+  #     - 5601:5601
+  #   networks:
+  #     - aspnetcoreapp-network
+  #   healthcheck:
+  #     interval: 10s
+  #     retries: 20
+  #     test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:5601/api/status
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - "C:/docker-volumes/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
+
+  postgres:
+    image: postgres:16.3
+    ports:
+      - 5433:5432
+    volumes:
+      - ./backup2:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: shop
+
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter
+    ports:
+      - 9187:9187
+    environment:
+      # DATA_SOURCE_NAME: "postgresql://postgres:postgrespassword@postgres:5432/shop?sslmode=disable"
+      DATA_SOURCE_NAME: "postgresql://postgres:Qwerty1!@pgmaster:5432/demo_otus?sslmode=disable"
+    # networks:
+    #   - aspnetcoreapp-network
+    links:
+      - postgres
+      - prometheus
+
+networks:
+  aspnetcoreapp-network:
+    driver: bridge

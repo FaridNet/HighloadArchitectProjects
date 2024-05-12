@@ -4,24 +4,27 @@ using Infrastructure.Data.Initialiser;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+  public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+  {
+    var connectionString = configuration.GetConnectionString("DefaultConnection");
+    services.AddDbContext<ApplicationDbContext>((sp, options) =>
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
-        services.AddDbContext<ApplicationDbContext>((sp, options) =>
-        {
-            options.UseNpgsql(connectionString);            
-            options.EnableSensitiveDataLogging();
-        });
+      Console.WriteLine(connectionString);
 
-        services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+      options.UseNpgsql(connectionString);
+      options.EnableSensitiveDataLogging();
+    });
 
-        services.AddScoped<ApplicationDbContextInitialiser>();
+    services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
-        return services;
-    }
+    services.AddScoped<ApplicationDbContextInitialiser>();
+
+    return services;
+  }
 }

@@ -10,23 +10,51 @@ services:
     ports:
      - "8080:8080"
     depends_on:
-     - "postgres_db"
-     - "apm-server"
+      - "pgmaster"
+      # - "pgslave"
+      # - "pgasyncslave"
+      - "apm-server"
     networks:
       - aspnetcoreapp-network
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
 
-  postgres_db:
-    container_name: 'postgres'
+  pgmaster:    
     image: postgres
+    container_name: pgmaster
     command: ["postgres", "-c", "log_statement=all"]
     ports:
-     - "54320:5432"
+     - "54321:5432"
     environment:      
       POSTGRES_PASSWORD: Qwerty1!
     networks:
       - aspnetcoreapp-network
+    volumes:
+      - "C:/docker-volumes/pgmaster:/var/lib/postgresql/data"
+
+  # pgslave:    
+  #   image: postgres
+  #   command: ["postgres", "-c", "log_statement=all"]
+  #   ports:
+  #    - "54322:5432"
+  #   environment:      
+  #     POSTGRES_PASSWORD: Qwerty2!
+  #   networks:
+  #     - aspnetcoreapp-network
+  #   volumes:
+  #     - "C:/docker-volumes/pgslave:/var/lib/postgresql/data"
+
+  # pgasyncslave:
+  #   image: postgres
+  #   command: ["postgres", "-c", "log_statement=all"]
+  #   ports:
+  #    - "54323:5432"
+  #   environment:      
+  #     POSTGRES_PASSWORD: Qwerty3!
+  #   networks:
+  #     - aspnetcoreapp-network
+  #   volumes:
+  #     - "C:/docker-volumes/pgasyncslave:/var/lib/postgresql/data"
 
   apm-server:
     container_name: 'apm-server'
