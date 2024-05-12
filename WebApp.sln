@@ -30,7 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "elastic", "elastic", "{40F0
 		docker-composes\elastic\docker-compose.yml = docker-composes\elastic\docker-compose.yml
 	EndProjectSection
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{2328ED04-A3F1-4A09-9FDD-F62CABF263FF}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{0521E76F-6600-4448-9596-06146393B86F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,10 +54,10 @@ Global
 		{3DADD744-7840-4B70-9215-FDD1903B048A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DADD744-7840-4B70-9215-FDD1903B048A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DADD744-7840-4B70-9215-FDD1903B048A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2328ED04-A3F1-4A09-9FDD-F62CABF263FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2328ED04-A3F1-4A09-9FDD-F62CABF263FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2328ED04-A3F1-4A09-9FDD-F62CABF263FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2328ED04-A3F1-4A09-9FDD-F62CABF263FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0521E76F-6600-4448-9596-06146393B86F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0521E76F-6600-4448-9596-06146393B86F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0521E76F-6600-4448-9596-06146393B86F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0521E76F-6600-4448-9596-06146393B86F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

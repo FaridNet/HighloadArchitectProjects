@@ -1,0 +1,25 @@
+global:
+  scrape_interval:     3s 
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+  
+  - job_name: webapi-prometheus
+    scheme: http
+    metrics_path: /metrics    
+    static_configs:
+    - targets:
+        - api-webapp:8080
+
+  - job_name: pgmaster-exporter
+    static_configs:
+      - targets: ["pgmaster-exporter:9187"]
+  
+  - job_name: pgslave-exporter
+    static_configs:
+      - targets: ["pgslave-exporter:9187"]
+
+ 
+ 

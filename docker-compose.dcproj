@@ -4,7 +4,7 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <DockerPublishLocally>False</DockerPublishLocally>
-    <ProjectGuid>2328ed04-a3f1-4a09-9fdd-f62cabf263ff</ProjectGuid>
+    <ProjectGuid>0521e76f-6600-4448-9596-06146393b86f</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>webapi</DockerServiceName>
@@ -12,5 +12,10 @@
   <ItemGroup>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
+    <None Include="grafana\provisioning\dashboards\9628_rev7.json" />
+    <None Include="grafana\provisioning\dashboards\Dashboard.yml" />
+    <None Include="grafana\provisioning\dashboards\ApiDashboard.json" />
+    <None Include="grafana\provisioning\datasources\prometheus_ds.yml" />
+    <None Include="prometheus\prometheus.yml" />
   </ItemGroup>
 </Project>

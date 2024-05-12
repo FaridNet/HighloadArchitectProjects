@@ -14,7 +14,12 @@ builder.AddWebServices();
 var app = builder.Build();
 await app.UseWebServicesAsync();
 app.UseAllElasticApm(builder.Configuration);
+
+// grafana
 app.UseMetricServer();
-app.UseHttpMetrics();
+app.UseHttpMetrics(options =>
+{
+  options.AddCustomLabel("host", context => context.Request.Host.Host);
+});
 
 app.Run();

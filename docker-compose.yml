@@ -1,22 +1,30 @@
-version: '3.8'
+version: '3.4'
 
 services:
   webapi:
     image: ${DOCKER_REGISTRY-}webapi
+    container_name: api-webapp
+    hostname: webapi
     build:
       context: .
       dockerfile: src/WebApi/Dockerfile
     ports:
       - 8080:8080
     depends_on:
-      - pgmaster
+      prometheus:
+        condition: service_healthy
+      grafana:
+        condition: service_healthy
+      pgmaster: 
+        condition: service_started
       # - "pgslave"
-      # - "pgasyncslave"      
+      # - "pgasyncslave"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
 
   pgmaster:
-    image: postgres:16.3
+    container_name: pgmaster-webapp
+    image: postgres
     command: ["postgres", "-c", "log_statement=all"]
     ports:
       - 54321:5432
@@ -28,17 +36,17 @@ services:
     volumes:
       - "C:/docker-volumes/pgmaster:/var/lib/postgresql/data"
 
-  # pgslave:
-  #   image: postgres
-  #   command: ["postgres", "-c", "log_statement=all"]
-  #   ports:
-  #    - "54322:5432"
-  #   environment:      
-  #     POSTGRES_PASSWORD: Qwerty2!
-  #   networks:
-  #     - aspnetcoreapp-network
-  #   volumes:
-  #     - "C:/docker-volumes/pgslave:/var/lib/postgresql/data"
+  pgslave:
+    container_name: pgslave-webapp
+    image: postgres
+    command: ["postgres", "-c", "log_statement=all"]
+    ports:
+     - "54322:5432"
+    environment:      
+      POSTGRES_PASSWORD: Qwerty2!
+      POSTGRES_DB: demo_otus
+    volumes:
+      - "C:/docker-volumes/pgslave:/var/lib/postgresql/data"
 
   # pgasyncslave:
   #   image: postgres
@@ -53,32 +61,56 @@ services:
   #     - "C:/docker-volumes/pgasyncslave:/var/lib/postgresql/data"
 
   grafana:
-    image: grafana/grafana
-    restart: always
+    container_name: grafana-webapp
+    image: grafana/grafana:master
     ports:
-      - 3000:3000
-    networks:
-      - aspnetcoreapp-network
+      - "3000:3000"
+    volumes:
+        - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+        - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+    depends_on:
+        prometheus:
+            condition: service_healthy
+    healthcheck:
+        test: wget -q --tries=1 -O- http://localhost:3000/
+        interval: 3s
+        timeout: 3s
+        retries: 10
+        start_period: 10s
 
   prometheus:
     image: prom/prometheus
+    container_name: prometheus-webapp
     restart: always
     ports:
       - 9090:9090
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
-    networks:
-      - aspnetcoreapp-network
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    healthcheck:
+        test: wget -q --tries=1 -O- http://localhost:9090/
+        interval: 3s
+        timeout: 3s
+        retries: 10
+        start_period: 10s
 
-  postgres-exporter:
+  pgmaster-exporter:
+    container_name: pgmaster-exporter-webapp
     image: prometheuscommunity/postgres-exporter
     ports:
       - 9187:9187
     environment:
       DATA_SOURCE_NAME: "postgresql://postgres:Qwerty1!@pgmaster:5432/demo_otus?sslmode=disable"
     links:
-      - postgres
+      - pgmaster
       - prometheus
 
-networks:
-  aspnetcoreapp-network
+  pgslave-exporter:
+    container_name: pgslave-exporter-webapp
+    image: prometheuscommunity/postgres-exporter
+    ports:
+      - 9188:9187
+    environment:
+      DATA_SOURCE_NAME: "postgresql://postgres:Qwerty2!@pgslave:5432/demo_otus?sslmode=disable"
+    links:
+      - pgslave
+      - prometheus
